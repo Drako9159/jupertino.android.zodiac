@@ -35,17 +35,27 @@ class HoroscopeDetailActivity : AppCompatActivity() {
 
     private fun initUIState() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                horoscopeDetailViewModel.state.collect{
-                    when(it){
-                        is HoroscopeDetailState.Error -> TODO()
-                        HoroscopeDetailState.Loading -> {
-                            binding.pb.isVisible = true
-                        }
-                        is HoroscopeDetailState.Success -> TODO()
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                horoscopeDetailViewModel.state.collect {
+                    when (it) {
+                        is HoroscopeDetailState.Error -> errorState()
+                        HoroscopeDetailState.Loading -> loadingState()
+                        is HoroscopeDetailState.Success -> successState()
                     }
                 }
             }
         }
+    }
+
+    private fun loadingState() {
+        binding.pb.isVisible = true
+    }
+
+    private fun errorState() {
+
+    }
+
+    private fun successState() {
+
     }
 }
