@@ -1,11 +1,14 @@
 package com.drako9159.horoscoapp.data.network
 
 import com.drako9159.horoscoapp.data.RepositoryImpl
+import com.drako9159.horoscoapp.data.core.interceptors.AuthInterceptor
 import com.drako9159.horoscoapp.domain.Repository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -16,11 +19,23 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit {
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit
             .Builder()
             .baseUrl("https://newastro.vercel.app/")
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
+        val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        return OkHttpClient
+            .Builder()
+            .addInterceptor(interceptor)
+            .addInterceptor(authInterceptor)
             .build()
     }
 
@@ -33,4 +48,6 @@ object NetworkModule {
     fun provideRepository(apiService: HoroscopeApiService): Repository {
         return RepositoryImpl(apiService)
     }
+
+
 }

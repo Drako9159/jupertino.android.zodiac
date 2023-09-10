@@ -8,7 +8,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.navArgs
+import com.drako9159.horoscoapp.R
 import com.drako9159.horoscoapp.databinding.ActivityHoroscopeDetailBinding
+import com.drako9159.horoscoapp.domain.model.HoroscopeModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -25,12 +27,17 @@ class HoroscopeDetailActivity : AppCompatActivity() {
         binding = ActivityHoroscopeDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         //args.type
-        horoscopeDetailViewModel.getHoroscope(args.type.name)
+        horoscopeDetailViewModel.getHoroscope(args.type)
         initUI()
     }
 
     private fun initUI() {
+        initListeners()
         initUIState()
+    }
+
+    private fun initListeners() {
+        binding.ivBack.setOnClickListener { onBackPressed() }
     }
 
     private fun initUIState() {
@@ -59,5 +66,21 @@ class HoroscopeDetailActivity : AppCompatActivity() {
         binding.pb.isVisible = false
         binding.tvTitle.text = state.sign
         binding.tvBody.text = state.prediction
+
+        val image = when (state.horoscopeModel) {
+            HoroscopeModel.Aries -> R.drawable.ic_aries
+            HoroscopeModel.Taurus -> R.drawable.ic_taurus
+            HoroscopeModel.Gemini -> R.drawable.ic_gemini
+            HoroscopeModel.Cancer -> R.drawable.ic_cancer
+            HoroscopeModel.Leo -> R.drawable.ic_leo
+            HoroscopeModel.Virgo -> R.drawable.ic_virgo
+            HoroscopeModel.Libra -> R.drawable.ic_libra
+            HoroscopeModel.Scorpio -> R.drawable.ic_scorpio
+            HoroscopeModel.Sagittarius -> R.drawable.ic_sagittarius
+            HoroscopeModel.Capricorn -> R.drawable.ic_capricorn
+            HoroscopeModel.Aquarius -> R.drawable.ic_acuarius
+            HoroscopeModel.Pisces -> R.drawable.ic_pisces
+        }
+        binding.ivDetail.setImageResource(image)
     }
 }
