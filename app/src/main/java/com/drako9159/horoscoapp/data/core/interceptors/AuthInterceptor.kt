@@ -14,6 +14,6 @@ class AuthInterceptor @Inject constructor(private val tokenManager: TokenManager
     }
 }
 
-class TokenManager @Inject constructor(){
-    fun getToken():String = "sdfasasdfslasa99sd9a7s9dd"
+class TokenManager @Inject constructor() {
+    fun getToken(): String = "sdfasasdfslasa99sd9a7s9dd"
 }
