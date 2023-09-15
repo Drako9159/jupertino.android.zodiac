@@ -59,6 +59,7 @@ android {
 
 dependencies {
 
+    testImplementation("junit:junit:4.12")
     val navVersion = "2.7.1"
     val cameraVersion = "1.2.3"
 
